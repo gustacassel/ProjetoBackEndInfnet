@@ -1,6 +1,8 @@
-﻿namespace ProjetoBackEndInfnet.Models;
+﻿using ProjetoBackEndInfnet.Repositories;
 
-public class OrderItem
+namespace ProjetoBackEndInfnet.Models;
+
+public sealed class OrderItem : IEntity
 {
     public long Id { get; set; }
     public long OrderId { get; set; }

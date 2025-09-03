@@ -1,6 +1,8 @@
-﻿namespace ProjetoBackEndInfnet.Models;
+﻿using ProjetoBackEndInfnet.Repositories;
 
-public class Address
+namespace ProjetoBackEndInfnet.Models;
+
+public sealed class Address : IEntity
 {
     public long Id { get; set; }
     public long UserId { get; set; }

@@ -1,6 +1,8 @@
-﻿namespace ProjetoBackEndInfnet.Models;
+﻿using ProjetoBackEndInfnet.Repositories;
 
-public class User
+namespace ProjetoBackEndInfnet.Models;
+
+public sealed class User : IEntity
 {
     public const string ROLE_USER = "User";
     public const string ROLE_ADMIN = "Admin";

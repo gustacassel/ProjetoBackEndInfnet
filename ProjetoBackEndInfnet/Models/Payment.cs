@@ -1,6 +1,8 @@
-﻿namespace ProjetoBackEndInfnet.Models;
+﻿using ProjetoBackEndInfnet.Repositories;
 
-public class Payment
+namespace ProjetoBackEndInfnet.Models;
+
+public sealed class Payment : IEntity
 {
     public long Id { get; set; }
     public long OrderId { get; set; }

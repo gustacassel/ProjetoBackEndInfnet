@@ -1,6 +1,8 @@
-﻿namespace ProjetoBackEndInfnet.Models;
+﻿using ProjetoBackEndInfnet.Repositories;
 
-public class Order
+namespace ProjetoBackEndInfnet.Models;
+
+public sealed class Order : IEntity
 {
     public const string STATUS_PENDING = "Pending";
     public const string STATUS_COMPLETED = "Completed";
