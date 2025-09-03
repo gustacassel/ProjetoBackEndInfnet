@@ -13,6 +13,11 @@ public abstract class BaseRepository<T> : IRepository<T>
     protected readonly string _fullPath;
     protected BaseRepository(string fileName)
     {
+        if (string.IsNullOrWhiteSpace(fileName) || !fileName.EndsWith(".json"))
+        {
+            throw new ArgumentException("O nome do arquivo deve ser um arquivo JSON válido.", nameof(fileName));
+        }
+
         var folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
         Directory.CreateDirectory(folderPath);
         _fullPath = Path.Combine(folderPath, fileName);
