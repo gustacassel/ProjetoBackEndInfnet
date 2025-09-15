@@ -1,8 +1,6 @@
-﻿using ProjetoBackEndInfnet.Repositories;
+﻿namespace ProjetoBackEndInfnet.Models;
 
-namespace ProjetoBackEndInfnet.Models;
-
-public sealed class Product : IEntity
+public sealed class Product
 {
     public long Id { get; set; }
     public string Description { get; set; } = string.Empty;

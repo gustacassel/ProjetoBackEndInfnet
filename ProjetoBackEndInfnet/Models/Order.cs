@@ -1,8 +1,6 @@
-﻿using ProjetoBackEndInfnet.Repositories;
+﻿namespace ProjetoBackEndInfnet.Models;
 
-namespace ProjetoBackEndInfnet.Models;
-
-public sealed class Order : IEntity
+public sealed class Order
 {
     public const string STATUS_PENDING = "Pending";
     public const string STATUS_COMPLETED = "Completed";
@@ -11,15 +9,18 @@ public sealed class Order : IEntity
     public long Id { get; set; }
     public long UserId { get; set; }
     public long AddressId { get; set; }
-    public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; set; } = DateTime.Now;
     public string Status { get; set; } = string.Empty;
 
-    public List<OrderItem> Items { get; set; } = [];
+    public User? User { get; set; }
+    public Address? Address { get; set; }
+    public Payment? Payment { get; set; }
+    public List<OrderItem> OrderItems { get; set; } = [];
 
     public decimal GetTotalAmount()
     {
         decimal total = 0;
-        foreach (var item in Items)
+        foreach (var item in OrderItems)
         {
             total += item.UnitPrice * item.Quantity;
         }

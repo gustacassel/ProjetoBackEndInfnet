@@ -1,9 +1,8 @@
-﻿using ProjetoBackEndInfnet.Models;
+﻿namespace ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Repositories;
-
-public sealed class ProductRepository : BaseRepository<Product>
+public sealed class ProductRepository
 {
-    public ProductRepository() : base("products.json")
-    { }
+    public ProductRepository()
+    {
+    }
 }

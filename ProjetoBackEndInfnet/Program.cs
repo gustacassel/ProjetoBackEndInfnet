@@ -1,10 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using ProjetoBackEndInfnet.Data;
+
 namespace ProjetoBackEndInfnet;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlite(connectionString);
+        });
 
         // Add services to the container.
         builder.Services.AddRazorPages();

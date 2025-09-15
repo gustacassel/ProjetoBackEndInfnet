@@ -1,8 +1,6 @@
-﻿using ProjetoBackEndInfnet.Repositories;
+﻿namespace ProjetoBackEndInfnet.Models;
 
-namespace ProjetoBackEndInfnet.Models;
-
-public sealed class User : IEntity
+public sealed class User
 {
     public const string ROLE_USER = "User";
     public const string ROLE_ADMIN = "Admin";
@@ -12,6 +10,9 @@ public sealed class User : IEntity
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty; // "User" or "Admin"
+
+    public List<Address> Addresses { get; set; } = [];
+    public List<Order> Orders { get; set; } = [];
 
     public bool IsAdmin()
     {
