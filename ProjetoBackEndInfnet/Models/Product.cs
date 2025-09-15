@@ -9,7 +9,7 @@ public sealed class Product
     public decimal QuantityInStock { get; set; }
     public bool Active { get; set; } = true;
 
-    public bool IsAvailable(int quantity)
+    public bool IsInStock(decimal quantity)
     {
         return Active && QuantityInStock >= quantity;
     }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoBackEndInfnet.Data;
+using ProjetoBackEndInfnet.Repositories;
 
 namespace ProjetoBackEndInfnet;
 
@@ -16,6 +17,8 @@ public static class Program
         {
             options.UseSqlite(connectionString);
         });
+
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
         // Add services to the container.
         builder.Services.AddRazorPages();
