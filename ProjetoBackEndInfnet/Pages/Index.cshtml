@@ -1,42 +1,88 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Painel de Controle";
 }
 
 <div class="container mt-5">
-    <div class="jumbotron bg-light p-5 rounded shadow-sm text-center">
-        <h1 class="display-4">Bem-vindo ao Sistema de Gerenciamento de Pedidos</h1>
-
-        <p class="lead mt-3">
-            Gerencie usuários, produtos, pedidos e pagamentos de forma eficiente e segura.
+    <div class="jumbotron bg-light p-4 rounded shadow-sm text-center">
+        <h1 class="display-5">Painel de Controle</h1>
+        <p class="lead mt-2">
+            Visualize as principais métricas do sistema e acompanhe as vendas em tempo real.
         </p>
-        <hr class="my-4" />
-        <p>
-            Use o menu de navegação para acessar diferentes seções do sistema:
-        </p>
+        <hr class="my-3" />
+    </div>
 
-        <div class="row mt-4 justify-content-center">
-            <div class="col-md-3 mb-2">
-                <a class="btn btn-primary btn-lg btn-block shadow-sm" asp-page="/Products/Index">
-                    Produtos
+    <div class="row">
+        <div class="col-md-3 d-flex flex-column gap-3">
+            <div class="card shadow-sm p-3 bg-primary text-white position-relative">
+                <a class="btn btn-light btn-sm position-absolute top-0 end-0 m-2"
+                   asp-page="/Products/Index" title="Ir para Produtos">
+                    <i class="bi bi-arrow-right"></i>
                 </a>
+                <h5><i class="bi bi-box-seam me-2"></i>Total de Produtos</h5>
+                <h2>@Model.TotalProducts</h2>
             </div>
-            <div class="col-md-3 mb-2">
-                <a class="btn btn-success btn-lg btn-block shadow-sm" asp-page="/Orders/Index">
-                    Pedidos
+
+            <div class="card shadow-sm p-3 bg-success text-white position-relative">
+                <a class="btn btn-light btn-sm position-absolute top-0 end-0 m-2"
+                   asp-page="/Orders/Index" title="Ir para Pedidos">
+                    <i class="bi bi-arrow-right"></i>
                 </a>
+                <h5><i class="bi bi-cart-check me-2"></i>Total de Pedidos</h5>
+                <h2>@Model.TotalOrders</h2>
             </div>
-            <div class="col-md-3 mb-2">
-                <a class="btn btn-warning btn-lg btn-block shadow-sm" asp-page="/Users/Index">
-                    Usuários
+
+            <div class="card shadow-sm p-3 bg-danger text-white position-relative">
+                <a class="btn btn-light btn-sm position-absolute top-0 end-0 m-2"
+                   asp-page="/Orders/Index?status=pending" title="Ver Pedidos Pendentes">
+                    <i class="bi bi-arrow-right"></i>
                 </a>
+                <h5><i class="bi bi-hourglass-split me-2"></i>Pedidos Pendentes</h5>
+                <h2>@Model.TotalPendingOrders</h2>
             </div>
-            <div class="col-md-3 mb-2">
-                <a class="btn btn-info btn-lg btn-block shadow-sm" asp-page="/Reports/Index">
-                    Relatórios
+
+            <div class="card shadow-sm p-3 bg-warning text-dark position-relative">
+                <a class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2"
+                   asp-page="/Users/Index" title="Ir para Usuários">
+                    <i class="bi bi-arrow-right"></i>
                 </a>
+                <h5><i class="bi bi-people me-2"></i>Total de Usuários</h5>
+                <h2>@Model.TotalUsers</h2>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card shadow-sm p-3" style="height: 500px;">
+                <h5>5 Produtos Mais Vendidos</h5>
+                <canvas id="topProductsChart" style="height:100%; width:100%;"></canvas>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('topProductsChart').getContext('2d');
+        const topProductsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.TopProductsLabels)),
+                datasets: [{
+                    label: 'Quantidade Vendida',
+                    data: @Html.Raw(Json.Serialize(Model.TopProductsValues)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+}

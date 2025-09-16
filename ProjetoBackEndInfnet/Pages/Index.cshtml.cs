@@ -1,20 +1,43 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages
+namespace ProjetoBackEndInfnet.Pages;
+
+public sealed class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    public int TotalProducts { get; set; }
+    public int TotalOrders { get; set; }
+    public int TotalPendingOrders { get; set; }
+    public int TotalUsers { get; set; }
+
+    public List<string> TopProductsLabels { get; set; } = [];
+    public List<int> TopProductsValues { get; set; } = [];
+
+    private readonly IProductRepository _productRepository;
+    private readonly IOrderRepository _orderRepository;
+    private readonly IUserRepository _userRepository;
+    public IndexModel(IProductRepository productRepository, IOrderRepository orderRepository, IUserRepository userRepository)
     {
-        private readonly ILogger<IndexModel> _logger;
+        _productRepository = productRepository;
+        _orderRepository = orderRepository;
+        _userRepository = userRepository;
+    }
 
-        public IndexModel(ILogger<IndexModel> logger)
+    public async Task OnGetAsync()
+    {
+        var prods = await _productRepository.GetAllActiveProductsAsync();
+
+        TotalProducts = prods.Count;
+        TotalOrders = 15;//await _orderRepo.GetCountAsync();
+        TotalUsers = 10;// await _userRepo.GetCountAsync();
+        TotalPendingOrders = 5; //await _orderRepo.GetCountByStatusAsync(OrderStatus.Pending);
+
+        var topProducts = prods.Take(5).Select(p => new
         {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
+            p.Description,
+            QuantitySold = new Random().Next(1, 100) // Simulando quantidade vendida
+        }).ToList();
+        TopProductsLabels = topProducts.Select(p => p.Description).ToList();
+        TopProductsValues = topProducts.Select(p => p.QuantitySold).ToList();
     }
 }
