@@ -8,7 +8,7 @@ namespace ProjetoBackEndInfnet.Pages.Users;
 public sealed class DeleteModel : PageModel
 {
     [BindProperty]
-    public new User? User { get; set; }
+    public new User User { get; set; } = null!;
 
     private readonly IUserRepository _repository;
     public DeleteModel(IUserRepository repository)
@@ -23,11 +23,13 @@ public sealed class DeleteModel : PageModel
             return NotFound();
         }
 
-        User = await _repository.GetByIdAsync(id.Value);
-        if (User is null)
+        var user = await _repository.GetByIdAsync(id.Value);
+        if (user is null)
         {
             return NotFound();
         }
+
+        User = user;
 
         return Page();
     }

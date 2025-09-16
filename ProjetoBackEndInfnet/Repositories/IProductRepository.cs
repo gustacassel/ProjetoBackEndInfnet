@@ -9,6 +9,7 @@ public interface IProductRepository
     Task AddAsync(Product product);
     Task UpdateAsync(Product product);
     Task DeleteAsync(long id);
+    Task<int> GetCountAsync();
     Task<List<Product>> GetAllActiveProductsAsync();
     Task<bool> IsInStock(long productId, decimal quantity);
 }

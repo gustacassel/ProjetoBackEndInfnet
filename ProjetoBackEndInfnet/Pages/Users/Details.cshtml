@@ -5,35 +5,48 @@
     ViewData["Title"] = "Detalhes do Usuário";
 }
 
-<h1>Detalhes do Usuário</h1>
+<div class="container mt-4">
+    <h1 class="display-5">Detalhes do Usuário</h1>
+    <p class="text-muted">Visualize as informações completas deste usuário.</p>
+    <hr />
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">Nome</dt>
-        <dd class="col-sm-10">@Model.User.Name</dd>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">@Model.User.Name</dd>
 
-        <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.User.Email</dd>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.User.Email</dd>
 
-        <dt class="col-sm-2">Perfil</dt>
-        <dd class="col-sm-10">@Model.User.Role</dd>
+                <dt class="col-sm-3">Perfil</dt>
+                <dd class="col-sm-9">@Model.User.Role</dd>
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">
-            @if (Model.User.Active)
-            {
-                <i class="bi bi-check-circle-fill text-success fs-5" />
-                <span class="badge bg-success">Ativo</span>
-            }
-            else
-            {
-                <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                <span class="badge bg-secondary">Inativo</span>
-            }
-        </dd>
-    </dl>
-    <a asp-page="./Edit" asp-route-id="@Model.User.Id" class="btn btn-warning">
-        <i class="bi bi-pencil-square"></i> Editar
-    </a>
-    <a asp-page="./Index" class="btn btn-secondary">Voltar</a>
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                    @if (Model.User.Active)
+                    {
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">
+                            <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                        </span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <a asp-page="./Edit" asp-route-id="@Model.User.Id" class="btn btn-warning me-2">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
+        <a asp-page="./Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+        </a>
+    </div>
 </div>

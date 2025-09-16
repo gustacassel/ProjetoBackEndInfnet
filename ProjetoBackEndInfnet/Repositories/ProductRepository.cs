@@ -59,4 +59,9 @@ public sealed class ProductRepository : IProductRepository
 
         return product.IsInStock(quantity);
     }
+
+    public Task<int> GetCountAsync()
+    {
+        return _context.Products.CountAsync();
+    }
 }

@@ -5,52 +5,62 @@
     ViewData["Title"] = "Cadastrar Usuário";
 }
 
-<h1>Cadastrar Usuário</h1>
-<h4>Informações do Usuário</h4>
-<hr />
+<div class="container mt-4">
+    <div class="mb-4">
+        <h1 class="display-5"><i class="bi bi-person-plus"></i> Cadastrar Novo Usuário</h1>
+        <p class="text-muted">Preencha os dados abaixo para adicionar um novo usuário ao sistema.</p>
+        <hr />
+    </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="User.Name"></label>
-                <input asp-for="User.Name" class="form-control" placeholder="Digite o nome completo" />
-                <span asp-validation-for="User.Name" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="User.Name" class="form-label"></label>
+                    <input asp-for="User.Name" class="form-control" placeholder="Digite o nome completo" />
+                    <span asp-validation-for="User.Name" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="User.Email"></label>
-                <input asp-for="User.Email" class="form-control" placeholder="Digite o e-mail" />
-                <span asp-validation-for="User.Email" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="User.Email" class="form-label"></label>
+                    <input asp-for="User.Email" class="form-control" type="email" placeholder="Digite o e-mail" />
+                    <span asp-validation-for="User.Email" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="User.Password"></label>
-                <input asp-for="User.Password" class="form-control" type="password" placeholder="Digite a senha" />
-                <span asp-validation-for="User.Password" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="User.Password" class="form-label"></label>
+                    <input asp-for="User.Password" class="form-control" type="password" placeholder="Digite a senha" />
+                    <span asp-validation-for="User.Password" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="User.Role"></label>
-                <select asp-for="User.Role" class="form-control">
-                    <option value="User">Usuário</option>
-                    <option value="Admin">Administrador</option>
-                </select>
-                <span asp-validation-for="User.Role" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="User.Role" class="form-label"></label>
+                    <select asp-for="User.Role" class="form-select">
+                        <option value="User">Usuário</option>
+                        <option value="Admin">Administrador</option>
+                    </select>
+                    <span asp-validation-for="User.Role" class="text-danger"></span>
+                </div>
 
-            <div class="form-group form-check">
-                <input asp-for="User.Active" class="form-check-input" />
-                <label asp-for="User.Active" class="form-check-label"></label>
-            </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="User.Active" id="activeCheck" />
+                    <label class="form-check-label" for="activeCheck">
+                        @Html.DisplayNameFor(model => model.User.Active)
+                    </label>
+                </div>
 
-            <div class="form-group mt-2">
-                <input type="submit" value="Cadastrar" class="btn btn-primary" />
-                <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Cadastrar
+                    </button>
+                    <a asp-page="Index" class="btn btn-secondary ms-2">
+                        <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -27,9 +27,9 @@ public sealed class IndexModel : PageModel
     {
         var prods = await _productRepository.GetAllActiveProductsAsync();
 
-        TotalProducts = prods.Count;
+        TotalProducts = await _productRepository.GetCountAsync();
         TotalOrders = 15;//await _orderRepo.GetCountAsync();
-        TotalUsers = 10;// await _userRepo.GetCountAsync();
+        TotalUsers = await _userRepository.GetCountAsync();
         TotalPendingOrders = 5; //await _orderRepo.GetCountByStatusAsync(OrderStatus.Pending);
 
         var topProducts = prods.Take(5).Select(p => new

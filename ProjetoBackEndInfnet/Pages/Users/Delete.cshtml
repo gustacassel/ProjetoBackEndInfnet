@@ -5,23 +5,51 @@
     ViewData["Title"] = "Excluir Usuário";
 }
 
-<h1>Excluir Usuário</h1>
+<div class="container mt-4">
+    <h1 class="display-5 text-danger">Excluir Usuário</h1>
+    <p class="text-muted">Confirme abaixo se deseja realmente excluir este usuário.</p>
+    <hr />
 
-<h3>Tem certeza que deseja excluir este usuário?</h3>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.User.Name)</dd>
 
-<dl class="row">
-    <dt class="col-sm-2">Nome</dt>
-    <dd class="col-sm-10">@Model.User.Name</dd>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.User.Email)</dd>
 
-    <dt class="col-sm-2">Email</dt>
-    <dd class="col-sm-10">@Model.User.Email</dd>
+                <dt class="col-sm-3">Perfil</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.User.Role)</dd>
 
-    <dt class="col-sm-2">Perfil</dt>
-    <dd class="col-sm-10">@Model.User.Role</dd>
-</dl>
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                    @if (Model.User.Active)
+                    {
+                        <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i> Ativo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary"><i class="bi bi-x-circle-fill me-1"></i> Inativo</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
 
-<form method="post">
-    <input type="hidden" asp-for="User.Id" />
-    <input type="submit" value="Excluir" class="btn btn-danger" />
-    <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form method="post">
+        <input type="hidden" asp-for="User.Id" />
+        <div class="d-flex">
+            <button type="submit" class="btn btn-danger me-2">
+                <i class="bi bi-trash-fill"></i> Excluir
+            </button>
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
