@@ -1,0 +1,66 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Addresses.IndexModel
+
+@{
+    ViewData["Title"] = "Lista de Endereços";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="display-5">Lista de Endereços</h1>
+        <a asp-page="Create" class="btn btn-primary btn-lg shadow-sm">
+            <i class="bi bi-plus-circle"></i> Cadastrar Novo Endereço
+        </a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-bordered align-middle mb-0">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Addresses[0].Street)</th>
+                    <th>@Html.DisplayNameFor(model => model.Addresses[0].City)</th>
+                    <th>@Html.DisplayNameFor(model => model.Addresses[0].State)</th>
+                    <th>@Html.DisplayNameFor(model => model.Addresses[0].ZipCode)</th>
+                    <th>@Html.DisplayNameFor(model => model.Addresses[0].Active)</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Addresses)
+                {
+                    <tr class="text-center">
+                        <td>@Html.DisplayFor(modelItem => item.Street)</td>
+                        <td>@Html.DisplayFor(modelItem => item.City)</td>
+                        <td>@Html.DisplayFor(modelItem => item.State)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ZipCode)</td>
+                        <td>
+                            @if (item.Active)
+                            {
+                                <span class="badge bg-success fs-7">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary fs-7">
+                                    <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info btn-sm me-1 text-white">
+                                <i class="bi bi-info-circle"></i> Detalhes
+                            </a>
+                            <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Excluir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -21,6 +21,7 @@ public static class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IOrderRepository, OrderRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
         // Add services to the container.
         builder.Services.AddRazorPages();

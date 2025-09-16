@@ -1,0 +1,66 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Addresses.CreateModel
+
+@{
+    ViewData["Title"] = "Cadastrar Novo Endereço";
+}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <h1 class="display-5"><i class="bi bi-geo-alt"></i> Cadastrar Novo Endereço</h1>
+        <p class="text-muted">Preencha os dados abaixo para adicionar um novo endereço ao sistema.</p>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.Street" class="form-label"></label>
+                    <input asp-for="Address.Street" class="form-control" placeholder="Digite o logradouro" />
+                    <span asp-validation-for="Address.Street" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.City" class="form-label"></label>
+                    <input asp-for="Address.City" class="form-control" placeholder="Digite a cidade" />
+                    <span asp-validation-for="Address.City" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.State" class="form-label"></label>
+                    <input asp-for="Address.State" class="form-control" placeholder="Digite o estado" />
+                    <span asp-validation-for="Address.State" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.ZipCode" class="form-label"></label>
+                    <input asp-for="Address.ZipCode" class="form-control" placeholder="Ex: 12345-678" />
+                    <span asp-validation-for="Address.ZipCode" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="Address.Active" id="activeCheck" />
+                    <label class="form-check-label" for="activeCheck">
+                        @Html.DisplayNameFor(model => model.Address.Active)
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Cadastrar
+                    </button>
+                    <a asp-page="Index" class="btn btn-secondary ms-2">
+                        <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
