@@ -14,7 +14,7 @@ public sealed class ProductRepository : IProductRepository
 
     public async Task<List<Product>> GetAllAsync()
     {
-        return await _context.Products.Where(p => p.Active).ToListAsync();
+        return await _context.Products.ToListAsync();
     }
 
     public async Task<Product?> GetByIdAsync(long id)
@@ -44,7 +44,7 @@ public sealed class ProductRepository : IProductRepository
         }
     }
 
-    public Task<List<Product>> GetActiveProductsAsync()
+    public Task<List<Product>> GetAllActiveProductsAsync()
     {
         return _context.Products.Where(p => p.Active).ToListAsync();
     }

@@ -4,7 +4,39 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="jumbotron bg-light p-5 rounded shadow-sm text-center">
+        <h1 class="display-4">Bem-vindo ao Sistema de Gerenciamento de Pedidos</h1>
+
+        <p class="lead mt-3">
+            Gerencie usuários, produtos, pedidos e pagamentos de forma eficiente e segura.
+        </p>
+        <hr class="my-4" />
+        <p>
+            Use o menu de navegação para acessar diferentes seções do sistema:
+        </p>
+
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-3 mb-2">
+                <a class="btn btn-primary btn-lg btn-block shadow-sm" asp-page="/Products/Index">
+                    Produtos
+                </a>
+            </div>
+            <div class="col-md-3 mb-2">
+                <a class="btn btn-success btn-lg btn-block shadow-sm" asp-page="/Orders/Index">
+                    Pedidos
+                </a>
+            </div>
+            <div class="col-md-3 mb-2">
+                <a class="btn btn-warning btn-lg btn-block shadow-sm" asp-page="/Users/Index">
+                    Usuários
+                </a>
+            </div>
+            <div class="col-md-3 mb-2">
+                <a class="btn btn-info btn-lg btn-block shadow-sm" asp-page="/Reports/Index">
+                    Relatórios
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

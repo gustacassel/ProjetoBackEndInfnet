@@ -19,6 +19,8 @@ public static class Program
         });
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         // Add services to the container.
         builder.Services.AddRazorPages();

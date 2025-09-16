@@ -1,0 +1,51 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Dashboard de Gerenciamento</h1>
+
+    <div class="row text-center">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Produtos</h5>
+                    <p class="card-text display-4">@Model.TotalProducts</p>
+                    <a asp-page="/Products/Index" class="btn btn-primary">Ver Produtos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Pedidos</h5>
+                    <p class="card-text display-4">@Model.TotalOrders</p>
+                    <a asp-page="/Orders/Index" class="btn btn-success">Ver Pedidos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Usuários</h5>
+                    <p class="card-text display-4">@Model.TotalUsers</p>
+                    <a asp-page="/Users/Index" class="btn btn-warning">Ver Usuários</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Pedidos Pendentes</h5>
+                    <p class="card-text display-4">@Model.PendingOrders</p>
+                    <a asp-page="/Orders/Index" class="btn btn-info">Ver Pedidos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Products.DeleteModel
+
+@{
+    ViewData["Title"] = "Excluir Produto";
+}
+
+<div class="container mt-4">
+    <h1 class="display-5 text-danger">Excluir Produto</h1>
+    <p class="text-muted">Confirme abaixo se deseja realmente excluir este produto.</p>
+    <hr />
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Descrição</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Product.Description)</dd>
+
+                <dt class="col-sm-3">Preço Unitário</dt>
+                <dd class="col-sm-9">@Model.Product.Price.ToString("C2")</dd>
+
+                <dt class="col-sm-3">Unidade de Medida</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Product.MeasureUnit)</dd>
+
+                <dt class="col-sm-3">Quantidade em Estoque</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Product.QuantityInStock)</dd>
+
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Product.Active)
+                    {
+                        <span class="badge bg-success">Ativo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inativo</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Product.Id" />
+        <div class="d-flex">
+            <button type="submit" class="btn btn-danger me-2">
+                <i class="bi bi-trash-fill"></i> Excluir
+            </button>
+            <a asp-page="./Index" class="btn btn-secondary">Voltar à Lista</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
