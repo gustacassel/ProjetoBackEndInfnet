@@ -1,0 +1,54 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Users.EditModel
+
+@{
+    ViewData["Title"] = "Editar Usuário";
+}
+
+<h1>Editar Usuário</h1>
+<h4>Informações do Usuário</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="User.Id" />
+
+            <div class="form-group">
+                <label asp-for="User.Name"></label>
+                <input asp-for="User.Name" class="form-control" />
+                <span asp-validation-for="User.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Email"></label>
+                <input asp-for="User.Email" class="form-control" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Role"></label>
+                <select asp-for="User.Role" class="form-control">
+                    <option value="User">Usuário</option>
+                    <option value="Admin">Administrador</option>
+                </select>
+                <span asp-validation-for="User.Role" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="User.Active" class="form-check-input" />
+                <label asp-for="User.Active" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

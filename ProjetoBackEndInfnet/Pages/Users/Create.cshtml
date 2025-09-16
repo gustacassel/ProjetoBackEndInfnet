@@ -1,0 +1,59 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Users.CreateModel
+
+@{
+    ViewData["Title"] = "Cadastrar Usuário";
+}
+
+<h1>Cadastrar Usuário</h1>
+<h4>Informações do Usuário</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="User.Name"></label>
+                <input asp-for="User.Name" class="form-control" placeholder="Digite o nome completo" />
+                <span asp-validation-for="User.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Email"></label>
+                <input asp-for="User.Email" class="form-control" placeholder="Digite o e-mail" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Password"></label>
+                <input asp-for="User.Password" class="form-control" type="password" placeholder="Digite a senha" />
+                <span asp-validation-for="User.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Role"></label>
+                <select asp-for="User.Role" class="form-control">
+                    <option value="User">Usuário</option>
+                    <option value="Admin">Administrador</option>
+                </select>
+                <span asp-validation-for="User.Role" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="User.Active" class="form-check-input" />
+                <label asp-for="User.Active" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

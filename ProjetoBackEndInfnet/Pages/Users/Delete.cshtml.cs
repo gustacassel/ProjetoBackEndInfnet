@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProjetoBackEndInfnet.Models;
 using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages.Products;
+namespace ProjetoBackEndInfnet.Pages.Users;
 
 public sealed class DeleteModel : PageModel
 {
     [BindProperty]
-    public Product Product { get; set; } = null!;
+    public new User? User { get; set; }
 
-    private readonly IProductRepository _repository;
-    public DeleteModel(IProductRepository repository)
+    private readonly IUserRepository _repository;
+    public DeleteModel(IUserRepository repository)
     {
         _repository = repository;
     }
@@ -23,14 +23,11 @@ public sealed class DeleteModel : PageModel
             return NotFound();
         }
 
-        var product = await _repository.GetByIdAsync(id.Value);
-
-        if (product is null)
+        User = await _repository.GetByIdAsync(id.Value);
+        if (User is null)
         {
             return NotFound();
         }
-
-        Product = product;
 
         return Page();
     }

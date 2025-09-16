@@ -1,0 +1,39 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Users.DetailsModel
+
+@{
+    ViewData["Title"] = "Detalhes do Usuário";
+}
+
+<h1>Detalhes do Usuário</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.User.Name</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.User.Email</dd>
+
+        <dt class="col-sm-2">Perfil</dt>
+        <dd class="col-sm-10">@Model.User.Role</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">
+            @if (Model.User.Active)
+            {
+                <i class="bi bi-check-circle-fill text-success fs-5" />
+                <span class="badge bg-success">Ativo</span>
+            }
+            else
+            {
+                <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                <span class="badge bg-secondary">Inativo</span>
+            }
+        </dd>
+    </dl>
+    <a asp-page="./Edit" asp-route-id="@Model.User.Id" class="btn btn-warning">
+        <i class="bi bi-pencil-square"></i> Editar
+    </a>
+    <a asp-page="./Index" class="btn btn-secondary">Voltar</a>
+</div>

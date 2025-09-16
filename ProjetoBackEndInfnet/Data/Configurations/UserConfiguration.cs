@@ -31,6 +31,10 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
                .HasMaxLength(20)
                .IsRequired();
 
+        builder.Property(u => u.Active)
+               .IsRequired()
+               .HasDefaultValue(true);
+
         builder.HasMany(u => u.Addresses)
                .WithOne(a => a.User!)
                .HasForeignKey(a => a.UserId)
