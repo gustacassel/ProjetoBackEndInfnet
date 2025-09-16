@@ -1,77 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ProjetoBackEndInfnet.Data;
 using ProjetoBackEndInfnet.Models;
+using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages.Products
+namespace ProjetoBackEndInfnet.Pages.Products;
+
+public sealed class EditModel : PageModel
 {
-    public class EditModel : PageModel
-    {
-        private readonly ProjetoBackEndInfnet.Data.AppDbContext _context;
+    [BindProperty]
+    public Product? Product { get; set; }
 
-        public EditModel(ProjetoBackEndInfnet.Data.AppDbContext context)
+    private readonly IProductRepository _repository;
+    public EditModel(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<IActionResult> OnGetAsync(long? id)
+    {
+        if (id is null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Product Product { get; set; } = default!;
+        Product = await _repository.GetByIdAsync(id.Value);
 
-        public async Task<IActionResult> OnGetAsync(long? id)
+        if (Product is null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            var product =  await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            Product = product;
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        if (Product is null)
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(Product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(Product.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            return NotFound();
         }
 
-        private bool ProductExists(long id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        await _repository.UpdateAsync(Product!);
+
+        return RedirectToPage("./Index");
     }
 }

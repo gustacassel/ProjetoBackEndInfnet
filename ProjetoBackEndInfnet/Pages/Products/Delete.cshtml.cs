@@ -1,63 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ProjetoBackEndInfnet.Data;
 using ProjetoBackEndInfnet.Models;
+using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages.Products
+namespace ProjetoBackEndInfnet.Pages.Products;
+
+public sealed class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    [BindProperty]
+    public Product? Product { get; set; }
+
+    private readonly IProductRepository _repository;
+    public DeleteModel(IProductRepository repository)
     {
-        private readonly ProjetoBackEndInfnet.Data.AppDbContext _context;
+        _repository = repository;
+    }
 
-        public DeleteModel(ProjetoBackEndInfnet.Data.AppDbContext context)
+    public async Task<IActionResult> OnGetAsync(long? id)
+    {
+        if (id is null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Product Product { get; set; } = default!;
+        Product = await _repository.GetByIdAsync(id.Value);
 
-        public async Task<IActionResult> OnGetAsync(long? id)
+        if (Product is null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Product = product;
-            }
-            return Page();
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnPostAsync(long? id)
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync(long? id)
+    {
+        if (id is null || Product is null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                Product = product;
-                _context.Products.Remove(Product);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
+            return NotFound();
         }
+
+        await _repository.DeleteAsync(id.Value);
+
+        return RedirectToPage("./Index");
     }
 }

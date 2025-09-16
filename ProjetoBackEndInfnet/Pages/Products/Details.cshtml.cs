@@ -1,43 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ProjetoBackEndInfnet.Data;
 using ProjetoBackEndInfnet.Models;
+using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages.Products
+namespace ProjetoBackEndInfnet.Pages.Products;
+
+public sealed class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    public Product? Product { get; set; }
+
+    private readonly IProductRepository _repository;
+    public DetailsModel(IProductRepository repository)
     {
-        private readonly ProjetoBackEndInfnet.Data.AppDbContext _context;
+        _repository = repository;
+    }
 
-        public DetailsModel(ProjetoBackEndInfnet.Data.AppDbContext context)
+    public async Task<IActionResult> OnGetAsync(long? id)
+    {
+        if (id is null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public Product Product { get; set; } = default!;
+        Product = await _repository.GetByIdAsync(id.Value);
 
-        public async Task<IActionResult> OnGetAsync(long? id)
+        if (Product is null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Product = product;
-            }
-            return Page();
+            return NotFound();
         }
+
+        return Page();
     }
 }

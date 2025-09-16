@@ -1,44 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ProjetoBackEndInfnet.Data;
 using ProjetoBackEndInfnet.Models;
+using ProjetoBackEndInfnet.Repositories;
 
-namespace ProjetoBackEndInfnet.Pages.Products
+namespace ProjetoBackEndInfnet.Pages.Products;
+
+public sealed class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    [BindProperty]
+    public Product? Product { get; set; }
+
+    private readonly IProductRepository _repository;
+    public CreateModel(IProductRepository repository)
     {
-        private readonly ProjetoBackEndInfnet.Data.AppDbContext _context;
+        _repository = repository;
+    }
 
-        public CreateModel(ProjetoBackEndInfnet.Data.AppDbContext context)
-        {
-            _context = context;
-        }
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
 
-        public IActionResult OnGet()
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid || Product == null)
         {
             return Page();
         }
 
-        [BindProperty]
-        public Product Product { get; set; } = default!;
+        await _repository.AddAsync(Product);
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Products.Add(Product);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }
