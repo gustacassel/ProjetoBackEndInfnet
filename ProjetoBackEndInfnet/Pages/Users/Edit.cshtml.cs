@@ -36,6 +36,10 @@ public sealed class EditModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // Remove o erro de senha do ModelState
+        var userPasswordKey = nameof(User) + "." + nameof(User.Password);
+        ModelState.Remove(userPasswordKey);
+
         if (!ModelState.IsValid)
         {
             return Page();
