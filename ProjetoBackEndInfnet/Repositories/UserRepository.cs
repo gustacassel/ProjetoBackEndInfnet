@@ -41,9 +41,17 @@ public sealed class UserRepository : IUserRepository
 
     public async Task DeleteAsync(long id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context
+            .Users
+            .Include(u => u.Addresses)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
         if (user != null)
         {
+            if (user.Addresses != null)
+            {
+                _context.Addresses.RemoveRange(user.Addresses);
+            }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }

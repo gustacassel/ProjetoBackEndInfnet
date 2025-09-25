@@ -5,6 +5,9 @@ namespace ProjetoBackEndInfnet.Models;
 public sealed class Address
 {
     public long Id { get; set; }
+
+    [Display(Name = "ID do Usuário")]
+    [Required(ErrorMessage = "O campo ID do Usuário é obrigatório.")]
     public long UserId { get; set; }
 
     [Display(Name = "Rua")]

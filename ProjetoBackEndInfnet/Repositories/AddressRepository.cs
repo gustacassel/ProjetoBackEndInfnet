@@ -49,4 +49,12 @@ public sealed class AddressRepository : IAddressRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public Task<List<Address>> GetByUserIdAsync(long userId)
+    {
+        return _context.Addresses
+            .Where(a => a.UserId == userId)
+            .Include(a => a.User)
+            .ToListAsync();
+    }
 }
