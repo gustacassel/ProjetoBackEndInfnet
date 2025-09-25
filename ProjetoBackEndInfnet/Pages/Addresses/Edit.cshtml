@@ -1,0 +1,84 @@
+﻿@page
+@model ProjetoBackEndInfnet.Pages.Addresses.EditModel
+@{
+    ViewData["Title"] = "Editar Endereço";
+}
+
+<div class="container mt-4">
+    <h1 class="display-5">Editar Endereço</h1>
+    <p class="text-muted">Atualize as informações do endereço conforme necessário.</p>
+    <hr />
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Address.Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Address.Street" class="form-label"></label>
+                    <input asp-for="Address.Street" class="form-control" placeholder="Digite o logradouro" />
+                    <span asp-validation-for="Address.Street" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.Number" class="form-label"></label>
+                    <input asp-for="Address.Number" class="form-control" placeholder="Digite o número" />
+                    <span asp-validation-for="Address.Number" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.Neighborhood" class="form-label"></label>
+                    <input asp-for="Address.Neighborhood" class="form-control" placeholder="Digite o bairro" />
+                    <span asp-validation-for="Address.Neighborhood" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.City" class="form-label"></label>
+                    <input asp-for="Address.City" class="form-control" placeholder="Digite a cidade" />
+                    <span asp-validation-for="Address.City" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.State" class="form-label"></label>
+                    <input asp-for="Address.State" class="form-control" placeholder="Digite o estado" />
+                    <span asp-validation-for="Address.State" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.ZipCode" class="form-label"></label>
+                    <input asp-for="Address.ZipCode" class="form-control" placeholder="Digite o CEP" />
+                    <span asp-validation-for="Address.ZipCode" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address.UserId" class="form-label"></label>
+                    <select asp-for="Address.UserId" class="form-control" asp-items="Model.UsersList">
+                        <option value="">-- Selecione o Usuário --</option>
+                    </select>
+                    <span asp-validation-for="Address.UserId" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="Address.Active" class="form-check-input" id="activeCheck" />
+                    <label class="form-check-label" for="activeCheck">
+                        @Html.DisplayNameFor(model => model.Address.Active)
+                    </label>
+                </div>
+
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-save"></i> Salvar
+                    </button>
+                    <a asp-page="./Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
