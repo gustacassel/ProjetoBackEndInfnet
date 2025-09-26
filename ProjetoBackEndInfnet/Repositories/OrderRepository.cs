@@ -19,6 +19,7 @@ public sealed class OrderRepository : IOrderRepository
             .Include(o => o.Address)
             .Include(o => o.Payment)
             .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
             .ToListAsync();
     }
 
@@ -29,6 +30,7 @@ public sealed class OrderRepository : IOrderRepository
             .Include(o => o.Address)
             .Include(o => o.Payment)
             .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 
