@@ -34,16 +34,12 @@
             </div>
 
             <div class="card shadow-sm p-3 bg-danger text-white position-relative">
-                <a class="btn btn-light btn-sm position-absolute top-0 end-0 m-2"
-                   asp-page="/Orders/Index?status=pending" title="Ver Pedidos Pendentes">
-                    <i class="bi bi-arrow-right"></i>
-                </a>
                 <h5><i class="bi bi-hourglass-split me-2"></i>Pedidos Pendentes</h5>
                 <h2>@Model.TotalPendingOrders</h2>
             </div>
 
             <div class="card shadow-sm p-3 bg-warning text-dark position-relative">
-                <a class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2"
+                <a class="btn btn-light btn-sm position-absolute top-0 end-0 m-2"
                    asp-page="/Users/Index" title="Ir para Usuários">
                     <i class="bi bi-arrow-right"></i>
                 </a>
