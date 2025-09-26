@@ -59,6 +59,9 @@
                         <a asp-page="./Delete" asp-route-id="@order.Id" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i> Excluir
                         </a>
+                        <a asp-page="../OrderItems/Index" asp-route-orderId="@order.Id" class="btn btn-sm btn-outline-dark">
+                            <i class="bi bi-list-check"></i> Itens
+                        </a>
                     </div>
                 </div>
             </div>
