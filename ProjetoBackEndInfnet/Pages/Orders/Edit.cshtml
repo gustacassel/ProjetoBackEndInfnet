@@ -1,4 +1,113 @@
-﻿@page
+﻿@page "{id:long}"
+@using ProjetoBackEndInfnet.Models
 @model ProjetoBackEndInfnet.Pages.Orders.EditModel
+
 @{
+    ViewData["Title"] = "Editar Pedido";
+}
+
+<div class="container mt-4">
+    <h1 class="display-5"><i class="bi bi-pencil-square"></i> Editar Pedido</h1>
+    <p class="text-muted">Atualize os dados do pedido (itens são gerenciados em OrderItems).</p>
+    <hr />
+
+    <form method="post">
+        <input type="hidden" asp-for="Order.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Order.UserId" class="form-label"></label>
+            <select asp-for="Order.UserId" class="form-control" asp-items="Model.UsersList" id="user-select"></select>
+            <span asp-validation-for="Order.UserId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Order.AddressId" class="form-label"></label>
+            <select asp-for="Order.AddressId" class="form-control" id="address-select">
+                <option value="">-- Selecione um endereço --</option>
+            </select>
+            <span asp-validation-for="Order.AddressId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Order.Status" class="form-label"></label>
+            <select asp-for="Order.Status" class="form-control">
+                <option value="@Order.STATUS_PENDING">Pendente</option>
+                <option value="@Order.STATUS_COMPLETED">Concluído</option>
+                <option value="@Order.STATUS_CANCELED">Cancelado</option>
+            </select>
+            <span asp-validation-for="Order.Status" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Order.OrderDate" class="form-label"></label>
+            <input asp-for="Order.OrderDate" class="form-control" type="datetime-local" />
+            <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="bi bi-save"></i> Salvar
+            </button>
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Voltar
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const userSelect = document.getElementById('user-select');
+            const addressSelect = document.getElementById('address-select');
+            const currentAddressId = @Model.Order.AddressId;
+            const orderId = @Model.Order.Id; // Obtém o ID do pedido
+
+            // Função para carregar os endereços e popular o select
+            const loadAddresses = async (userId, selectedAddressId = null) => {
+                addressSelect.innerHTML = '<option value="">-- Selecione um endereço --</option>';
+
+                if (!userId) return;
+
+                try {
+                    // **Aqui está a correção:** a URL agora inclui o ID do pedido.
+                    const response = await fetch(`/Orders/Edit/${orderId}?handler=Addresses&userId=${userId}`);
+                    if (!response.ok) {
+                        throw new Error(`Erro de rede: ${response.status} - ${response.statusText}`);
+                    }
+                    const addresses = await response.json();
+
+                    addresses.forEach(address => {
+                        const option = document.createElement('option');
+                        option.value = address.id;
+                        option.textContent = address.text;
+                        addressSelect.appendChild(option);
+                    });
+
+                    // Seleciona o endereço atual se for fornecido
+                    if (selectedAddressId) {
+                        addressSelect.value = selectedAddressId;
+                    }
+
+                } catch (error) {
+                    console.error('Erro ao buscar endereços:', error);
+                    alert('Houve um erro ao carregar os endereços. Tente novamente.');
+                }
+            };
+
+            // Ouve a mudança no dropdown de usuários
+            userSelect.addEventListener('change', function () {
+                const userId = this.value;
+                loadAddresses(userId);
+            });
+
+            // Carrega os endereços iniciais ao carregar a página
+            const initialUserId = userSelect.value;
+            if (initialUserId) {
+                await loadAddresses(initialUserId, currentAddressId);
+            }
+        });
+    </script>
 }

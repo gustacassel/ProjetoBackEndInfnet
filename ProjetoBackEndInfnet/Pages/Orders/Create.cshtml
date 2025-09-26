@@ -1,120 +1,88 @@
 ﻿@page
 @using ProjetoBackEndInfnet.Models
 @model ProjetoBackEndInfnet.Pages.Orders.CreateModel
-
 @{
-    ViewData["Title"] = "Novo Pedido";
+    ViewData["Title"] = "Criar Pedido";
 }
 
 <div class="container mt-4">
-    <h1 class="display-5"><i class="bi bi-bag-plus"></i> Criar Novo Pedido</h1>
-    <p class="text-muted">Preencha os dados abaixo para criar um novo pedido.</p>
+    <h1 class="display-5"><i class="bi bi-basket"></i> Criar Pedido</h1>
+    <p class="text-muted">Preencha as informações do pedido.</p>
     <hr />
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <div class="mb-3">
-                    <label asp-for="Order.UserId" class="form-label"></label>
-                    <select asp-for="Order.UserId" class="form-control" asp-items="Model.UsersList">
-                        <option value="">-- Selecione um Usuário --</option>
-                    </select>
-                    <span asp-validation-for="Order.UserId" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="Order.AddressId" class="form-label"></label>
-                    <select asp-for="Order.AddressId" class="form-control" asp-items="Model.AddressesList">
-                        <option value="">-- Selecione um Endereço --</option>
-                    </select>
-                    <span asp-validation-for="Order.AddressId" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label>Itens do Pedido</label>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderItemsBody">
-                            <!-- linhas adicionadas via JS -->
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()">
-                        <i class="bi bi-plus-circle"></i> Adicionar Item
-                    </button>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="Order.Status" class="form-label"></label>
-                    <select asp-for="Order.Status" class="form-control">
-                        <option value="@Order.STATUS_PENDING">Pending</option>
-                        <option value="@Order.STATUS_COMPLETED">Completed</option>
-                        <option value="@Order.STATUS_CANCELED">Canceled</option>
-                    </select>
-                </div>
-
-                <div class="d-flex">
-                    <button type="submit" class="btn btn-success me-2">
-                        <i class="bi bi-check-circle"></i> Criar Pedido
-                    </button>
-                    <a asp-page="./Index" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
-                    </a>
-                </div>
-            </form>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="Order.UserId" class="form-label"></label>
+            <select asp-for="Order.UserId" class="form-control" asp-items="Model.UsersList" id="user-select">
+                <option value="">-- Selecione um usuário --</option>
+            </select>
+            <span asp-validation-for="Order.UserId" class="text-danger"></span>
         </div>
-    </div>
+
+        <div class="mb-3">
+            <label asp-for="Order.AddressId" class="form-label"></label>
+            <select asp-for="Order.AddressId" class="form-control" id="address-select">
+                <option value="">-- Selecione um endereço --</option>
+            </select>
+            <span asp-validation-for="Order.AddressId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Order.Status" class="form-label"></label>
+            <select asp-for="Order.Status" class="form-control">
+                <option value="@Order.STATUS_PENDING">Pendente</option>
+                <option value="@Order.STATUS_COMPLETED">Concluído</option>
+                <option value="@Order.STATUS_CANCELED">Cancelado</option>
+            </select>
+            <span asp-validation-for="Order.Status" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex">
+            <button type="submit" class="btn btn-success me-2">
+                <i class="bi bi-check-circle"></i> Criar Pedido
+            </button>
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Voltar à Lista
+            </a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
     <script>
-        const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ProductsList));
+        document.getElementById('user-select').addEventListener('change', async function () {
+            const userId = this.value;
+            const addressSelect = document.getElementById('address-select');
 
-        function addItemRow() {
-            const tbody = document.getElementById('orderItemsBody');
-            const row = document.createElement('tr');
+            // Limpa o dropdown de endereços
+            addressSelect.innerHTML = '<option value="">-- Selecione um endereço --</option>';
 
-            const productSelect = document.createElement('select');
-            productSelect.name = 'OrderItemsProductId';
-            productSelect.className = 'form-select';
-            products.forEach(p => {
-                const option = document.createElement('option');
-                option.value = p.id;
-                option.text = p.description;
-                productSelect.appendChild(option);
-            });
+            if (userId) {
+                try {
+                    // Faz a chamada assíncrona para a nova URL
+                    const response = await fetch(`/Orders/Create?handler=Addresses&userId=${userId}`);
 
-            const qtyInput = document.createElement('input');
-            qtyInput.type = 'number';
-            qtyInput.name = 'OrderItemsQuantity';
-            qtyInput.className = 'form-control';
-            qtyInput.value = 1;
-            qtyInput.min = 1;
+                    if (!response.ok) {
+                        throw new Error(`Erro de rede: ${response.status} - ${response.statusText}`);
+                    }
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.className = 'btn btn-danger btn-sm';
-            deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
-            deleteBtn.onclick = () => row.remove();
+                    const addresses = await response.json();
 
-            row.appendChild(createTd(productSelect));
-            row.appendChild(createTd(qtyInput));
-            row.appendChild(createTd(deleteBtn));
+                    // Preenche o dropdown de endereços com os dados recebidos
+                    addresses.forEach(address => {
+                        const option = document.createElement('option');
+                        option.value = address.id;
+                        option.textContent = address.text;
+                        addressSelect.appendChild(option);
+                    });
 
-            tbody.appendChild(row);
-        }
-
-        function createTd(content) {
-            const td = document.createElement('td');
-            td.appendChild(content);
-            return td;
-        }
+                } catch (error) {
+                    console.error('Erro ao buscar endereços:', error);
+                    alert('Houve um erro ao carregar os endereços. Tente novamente.');
+                }
+            }
+        });
     </script>
 }

@@ -21,22 +21,28 @@
                 <div class="card shadow-sm h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>Pedido #@order.Id</span>
-                        <span class="badge @(order.Status == Order.STATUS_COMPLETED ? "bg-success"
-                                                            : order.Status == Order.STATUS_CANCELED ? "bg-danger" : "bg-warning")">
-                        @order.Status
-                    </span>
-                </div>
-                <div class="card-body">
-                    <p><strong>Cliente:</strong> @order.User?.Name</p>
-                    <p><strong>Endereço:</strong> @order.Address?.Street, @order.Address?.Number - @order.Address?.Neighborhood</p>
-                    <p><strong>Cidade/Estado:</strong> @order.Address?.City / @order.Address?.State</p>
-                    <p><strong>Itens:</strong></p>
-                    <ul>
-                        @foreach (var item in order.OrderItems)
-                            {
-                                <li>@item.Product?.Description - @item.Quantity x @item.UnitPrice.ToString("C2")</li>
-                            }
-                        </ul>
+                        <span class="badge @(order.Status == Order.STATUS_COMPLETED ? "bg-success" : order.Status == Order.STATUS_CANCELED ? "bg-danger" : "bg-warning")">
+                            @order.Status
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Cliente:</strong> @order.User?.Name</p>
+                        <p><strong>Endereço:</strong> @order.Address?.Street, @order.Address?.Number - @order.Address?.Neighborhood</p>
+                        <p><strong>Cidade/Estado:</strong> @order.Address?.City / @order.Address?.State</p>
+                        <p><strong>Itens:</strong></p>
+                        @if (!order.OrderItems.Any())
+                        {
+                            <p>Nenhum item adicionado.</p>
+                        }
+                        else
+                        {
+                            <ul>
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li>@item.Product?.Description - @item.Quantity x @item.UnitPrice.ToString("C2")</li>
+                                }
+                            </ul>
+                        }
                         <p><strong>Total:</strong> @order.GetTotalAmount().ToString("C2")</p>
                         @if (order.Payment != null)
                         {

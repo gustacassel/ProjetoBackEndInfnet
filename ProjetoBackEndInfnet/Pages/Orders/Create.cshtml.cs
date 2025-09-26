@@ -9,38 +9,39 @@ namespace ProjetoBackEndInfnet.Pages.Orders;
 public sealed class CreateModel : PageModel
 {
     [BindProperty]
-    public Order Order { get; set; } = new Order();
-
-    [BindProperty]
-    public List<OrderItem> OrderItems { get; set; } = [];
-
+    public Order Order { get; set; } = new();
     public SelectList UsersList { get; set; } = null!;
-    public List<Product> ProductsList { get; set; } = [];
-    public SelectList AddressesList { get; set; } = null!;
 
     private readonly IOrderRepository _orderRepository;
     private readonly IUserRepository _userRepository;
     private readonly IAddressRepository _addressRepository;
-    private readonly IProductRepository _productRepository;
-
-    public CreateModel(IOrderRepository orderRepository, IUserRepository userRepository,
-        IAddressRepository addressRepository, IProductRepository productRepository)
+    public CreateModel(
+        IOrderRepository orderRepository,
+        IUserRepository userRepository,
+        IAddressRepository addressRepository)
     {
         _orderRepository = orderRepository;
         _userRepository = userRepository;
         _addressRepository = addressRepository;
-        _productRepository = productRepository;
     }
 
     public async Task OnGetAsync()
     {
         var users = await _userRepository.GetAllAsync();
-        UsersList = new SelectList(users, nameof(Models.User.Id), nameof(Models.User.Name));
+        UsersList = new SelectList(users, "Id", "Name");
+    }
 
-        ProductsList = await _productRepository.GetAllAsync();
+    public async Task<IActionResult> OnGetAddressesAsync(long userId)
+    {
+        var addresses = await _addressRepository.GetByUserIdAsync(userId);
 
-        var addresses = await _addressRepository.GetAllAsync();
-        AddressesList = new SelectList(addresses, nameof(Models.Address.Id), nameof(Models.Address.Street));
+        var addressData = addresses.Select(a => new
+        {
+            id = a.Id,
+            text = $"{a.Street}, {a.City}"
+        }).ToList();
+
+        return new JsonResult(addressData);
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -51,9 +52,8 @@ public sealed class CreateModel : PageModel
             return Page();
         }
 
-        Order.OrderItems = OrderItems;
         await _orderRepository.AddAsync(Order);
 
-        return RedirectToPage("./Index");
+        return RedirectToPage("../OrderItems/Index", new { orderId = Order.Id });
     }
 }
