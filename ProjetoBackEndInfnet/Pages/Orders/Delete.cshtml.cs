@@ -24,12 +24,15 @@ public sealed class DeleteModel : PageModel
         }
 
         // Busca o pedido com os dados de usuário e endereço
-        Order = await _orderRepository.GetByIdAsync(id.Value);
+        var order = await _orderRepository.GetByIdAsync(id.Value);
 
-        if (Order == null)
+        if (order == null)
         {
             return NotFound();
         }
+
+        Order = order;
+
         return Page();
     }
 

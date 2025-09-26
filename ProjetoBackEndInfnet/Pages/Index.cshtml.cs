@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProjetoBackEndInfnet.Models;
 using ProjetoBackEndInfnet.Repositories;
 
 namespace ProjetoBackEndInfnet.Pages;
@@ -28,9 +29,10 @@ public sealed class IndexModel : PageModel
         var prods = await _productRepository.GetAllActiveProductsAsync();
 
         TotalProducts = await _productRepository.GetCountAsync();
-        TotalOrders = 15;//await _orderRepo.GetCountAsync();
+        TotalOrders = await _orderRepository.CountAllAsync();
         TotalUsers = await _userRepository.GetCountAsync();
-        TotalPendingOrders = 5; //await _orderRepo.GetCountByStatusAsync(OrderStatus.Pending);
+        var pendingOrders = await _orderRepository.GetByStatusAsync(Order.STATUS_PENDING);
+        TotalPendingOrders = pendingOrders.Count;
 
         var topProducts = prods.Take(5).Select(p => new
         {

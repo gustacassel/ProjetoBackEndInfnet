@@ -71,4 +71,9 @@ public sealed class OrderRepository : IOrderRepository
             .Include(o => o.OrderItems)
             .ToListAsync();
     }
+
+    public Task<int> CountAllAsync()
+    {
+        return _context.Orders.CountAsync();
+    }
 }

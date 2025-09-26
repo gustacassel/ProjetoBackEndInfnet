@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ProjetoBackEndInfnet.Data;
 using ProjetoBackEndInfnet.Models;
 using ProjetoBackEndInfnet.Repositories;
 
@@ -24,9 +22,7 @@ public sealed class DetailsModel : PageModel
             return NotFound();
         }
 
-        // Busca o pedido e usa Include para carregar os dados relacionados
-        var order = await _orderRepository
-            .GetByIdAsync(id.Value);
+        var order = await _orderRepository.GetByIdAsync(id.Value);
 
         if (order == null)
         {
