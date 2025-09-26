@@ -31,4 +31,6 @@ public sealed class Product
     {
         return Active && QuantityInStock >= quantity;
     }
+
+    public List<OrderItem> OrderItems { get; set; } = [];
 }

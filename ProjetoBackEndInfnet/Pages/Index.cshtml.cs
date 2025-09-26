@@ -12,7 +12,7 @@ public sealed class IndexModel : PageModel
     public int TotalUsers { get; set; }
 
     public List<string> TopProductsLabels { get; set; } = [];
-    public List<int> TopProductsValues { get; set; } = [];
+    public List<decimal> TopProductsValues { get; set; } = [];
 
     private readonly IProductRepository _productRepository;
     private readonly IOrderRepository _orderRepository;
@@ -26,19 +26,26 @@ public sealed class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var prods = await _productRepository.GetAllActiveProductsAsync();
-
         TotalProducts = await _productRepository.GetCountAsync();
         TotalOrders = await _orderRepository.CountAllAsync();
         TotalUsers = await _userRepository.GetCountAsync();
+
         var pendingOrders = await _orderRepository.GetByStatusAsync(Order.STATUS_PENDING);
         TotalPendingOrders = pendingOrders.Count;
 
-        var topProducts = prods.Take(5).Select(p => new
-        {
-            p.Description,
-            QuantitySold = new Random().Next(1, 100) // Simulando quantidade vendida
-        }).ToList();
+        var prods = await _productRepository.GetAllActiveProductsAsync();
+
+        var topProducts = prods
+            .Select(p => new
+            {
+                p.Description,
+                QuantitySold = p.OrderItems.Sum(oi => oi.Quantity)
+            })
+            .Where(p => p.QuantitySold > 0)
+            .OrderByDescending(p => p.QuantitySold)
+            .Take(5)
+            .ToList();
+
         TopProductsLabels = topProducts.Select(p => p.Description).ToList();
         TopProductsValues = topProducts.Select(p => p.QuantitySold).ToList();
     }
